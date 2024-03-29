@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { register,login } = require("../controllers/usercontroller");
+const { register,login,logout } = require("../controllers/usercontroller");
 //const auth = require("../middlewares/auth");
 const { validRegister, validLogin } = require("../middlewares/userValidation");
 
@@ -9,6 +9,7 @@ const { validRegister, validLogin } = require("../middlewares/userValidation");
 router.post("/register", validRegister, register);
 
 router.post("/login", validLogin, login);
+router.post("/logout", logout);
 
 // router.put("/reset-password",validResetPassword, resetPassword); // password update 
 

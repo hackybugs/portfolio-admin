@@ -3,7 +3,7 @@ const app = express();
 const path = require('path');
 require("dotenv").config();
 const cors = require("cors");
-const jwt = require('jsonwebtoken');
+// const jwt = require('jsonwebtoken');
 app.use(cors());
 const useragent = require('express-useragent');
 app.use(useragent.express());
@@ -37,6 +37,7 @@ app.get(`/img/:folderName/:fileName`, (req, res) => {
 
 const PORT = process.env.PORT || 9700;
 const userRouter = require('./src/routes/user');
+
 app.use("/user",userRouter);
 
 
