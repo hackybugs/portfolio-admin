@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const admin = require("./admin");
-const { register,login,logout} = require("../controllers/usercontroller");
+const { register,login,logout,refreshToken} = require("../controllers/usercontroller");
+
 
 //const auth = require("../middlewares/auth");
 const { validRegister, validLogin ,validEmail } = require("../middlewares/userValidation");
@@ -9,7 +10,7 @@ const { authenticateToken } = require("../middlewares/authenticateToken");
 
 router.post("/register", validRegister, register);
 router.use("/testimonial",authenticateToken,admin);
-
+router.post("/refresh",authenticateToken,refreshToken);
 // router.post("/testimonial/create",authenticateToken,upload.single('testimonial_img'),create);
 // router.get("/testimonial/",authenticateToken, readTestimonial);
 router.post("/login", validLogin, login);

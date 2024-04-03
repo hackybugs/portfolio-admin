@@ -7,11 +7,24 @@ const storage = multer.diskStorage({
     cb(null, destinationPath);
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + '-' + file.originalname);
+    try {
+      if (file.mimetype !== 'image/png' && file.mimetype !== 'image/jpg' && file.mimetype !== 'image/jpeg') {
+        return cb(new Error(textMessage.multer.fileTypeError));
+      } else {
+        var fileName = Date.now() + '-user';
+        file.filename = fileName;
+        cb(null, fileName + '.jpg');
+      }
+    } catch (error) {
+      console.log({ "ERROR": error.message });
+    }
   }
 });
 
 // Create the multer instance
-const upload = multer({ storage: storage });
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 1024 * 1024 * 2 } //file 2 MB
+});
 
 module.exports = upload;

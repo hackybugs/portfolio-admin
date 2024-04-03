@@ -71,10 +71,12 @@ const login = async (req, res) => {
 
 }
 
-const refreshToken = async (req, res, user_id) => {
+const refreshToken = async (req, res) => {
   try {
     // Retrieve the refresh token from the database
-    const refreshTokenData = await db.RefreshToken.findOne({ where: { user_id: user_id } });
+    const user_id = req.user.id;
+    console.log(user_id);
+    const refreshTokenData = await db.Refresh_token.findOne({ where: { user_id: user_id } });
 
     if (!refreshTokenData) {
       return res.sendStatus(403); // Forbidden
@@ -119,4 +121,4 @@ const logout = async (req, res) => {
   }
 };
 
-module.exports = { register, login, logout };
+module.exports = { register, login, logout, refreshToken };
