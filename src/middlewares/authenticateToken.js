@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken');
 const authenticateToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
@@ -5,14 +6,13 @@ const authenticateToken = (req, res, next) => {
     if (!token) {
         return res.sendStatus(401);
     }
-
-    const result = verifyAccessToken(token);
-
-    if (!result.success) {
-        return res.status(403).json({ error: result.error });
-    }
-
-    req.user = result.data;
-    next();
+    jwt.verify(token, 'secret', (err, user) => {
+        if (err) {
+            return res.status(403).json({ error: 'Token is not valid' });
+        }
+        req.user = user;
+        next();
+    });
 }
+
 module.exports = { authenticateToken };

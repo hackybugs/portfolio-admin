@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      User.hasMany(models.Testimonial, {
+        foreignKey: 'userId', // Name of the foreign key in Testimonial model
+        as: 'testimonials' // Alias to use when accessing the associated testimonials
+      });
     }
   }
   User.init({

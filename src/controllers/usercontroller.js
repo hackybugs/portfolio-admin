@@ -3,9 +3,10 @@ const db = require('../models');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const app = express();
+app.use(bodyParser.json());
 const jwt = require('jsonwebtoken');
 const { generateAccessToken, generateRefreshToken } = require('../helpers/index.helpers');
-app.use(bodyParser.json());
+
 const register = async (req, res) => {
   try {
     const { firstName, lastName, email, password } = req.body;
@@ -34,7 +35,7 @@ const register = async (req, res) => {
 
     res.status(200).json({
       // token: token,
-      message: "Registered and login successfully",
+      message: "Registered successfully",
     });
   } catch (error) {
     console.error(error);
@@ -69,6 +70,34 @@ const login = async (req, res) => {
   }
 
 }
+
+const refreshToken = async (req, res, user_id) => {
+  try {
+    // Retrieve the refresh token from the database
+    const refreshTokenData = await db.RefreshToken.findOne({ where: { user_id: user_id } });
+
+    if (!refreshTokenData) {
+      return res.sendStatus(403); // Forbidden
+    }
+
+    // Verify and decode the refresh token
+    jwt.verify(refreshTokenData.token, 'secret', (err, decoded) => {
+      if (err) {
+        return res.sendStatus(403); // Forbidden
+      }
+
+      // Generate a new access token using the decoded user information
+      const user = { id: decoded.id, email: decoded.email };
+      const accessToken = generateAccessToken(user);
+
+      // Return the new access token to the client
+      res.json({ accessToken: accessToken });
+    });
+  } catch (error) {
+    console.error('Error refreshing token:', error);
+    return res.sendStatus(500); // Internal Server Error
+  }
+};
 
 const logout = async (req, res) => {
   try {

@@ -25,26 +25,40 @@ const validRegister = (req, res, next) => {
         console.log(err);
     }
 }
-const validLogin = (req,res, next) => {
+const validLogin = (req, res, next) => {
     try {
         const { email, password } = req.body;
-        
+
         if (Object.keys(req.body).length === 0) {
             return res.json({ "ERROR": "emptyFields" });
-        } 
+        }
         // Check if email is missing or empty
         if (!email || email.trim() === "") {
             return res.json({ "ERROR": "emptyEmail" });
-        } 
+        }
         // Check if password is missing or empty
         if (!password || password.trim() === "") {
             return res.json({ "ERROR": "emptyPassword" });
-        } else {
-            return next();
-        };
+        }
+        return next();
     } catch (err) {
         console.log(err);
         return res.status(500).json({ "ERROR": "Internal Server Error" });
+    }
+}
+const validEmail = (req, res, next) => {
+    try {
+        const { email } = req.body;
+        if (Object.keys(req.body).length === 0) {
+            return res.json({ "ERROR": "Please enter email" });
+        }
+        // Check if email is missing or empty
+        if (!email || email.trim() === "") {
+            return res.json({ "ERROR": "emptyEmail" });
+        }
+        return next();
+    } catch (err) {
+        return res.status(500).json({ "Error": "Internal Server Error" })
     }
 }
 module.exports = { validRegister, validLogin };

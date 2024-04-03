@@ -11,7 +11,6 @@ function generateAccessToken(user) {
         exp: accessTokenExpiry // Expiration time
     };
     const secret = 'secret';
-    const options = { expiresIn: '30m' };
     const accessToken = jwt.sign(payload, secret);
 
     return accessToken;
