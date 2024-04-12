@@ -1,45 +1,53 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      // define association here
+      // Define associations
       User.hasMany(models.Testimonial, {
         foreignKey: 'userId', // Name of the foreign key in Testimonial model
         as: 'testimonials' // Alias to use when accessing the associated testimonials
       });
+      User.belongsToMany(models.Module, { through: 'UserPermission' });
     }
   }
+
   User.init({
     firstName: {
       type: DataTypes.STRING,
-      field: 'firstName', // Specify the database column name
+      allowNull: false, // Ensure first name is required
+      field: 'first_name', // Specify the database column name
     },
     lastName: {
       type: DataTypes.STRING,
-      field: 'lastName', // Specify the database column name
+      allowNull: false, // Ensure last name is required
+      field: 'last_name', // Specify the database column name
     },
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false, // Ensure email is required
+      unique: true, // Ensure email is unique
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false, // Ensure password is required
+    },
     createdAt: {
-      type:DataTypes.DATE,
-      field: 'createdAt', // Specify the database column name
-    },
-    updatedAt:  {
       type: DataTypes.DATE,
-      field: 'updatedAt', // Specify the database column name
-    },  
+      allowNull: false,
+      field: 'created_at', // Specify the database column name
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      field: 'updated_at', // Specify the database column name
+    },
   }, {
     sequelize,
     modelName: 'User',
-    tableName:'Users'
+    tableName: 'users', // Use lowercase table name for consistency
   });
+
   return User;
 };

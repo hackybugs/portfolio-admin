@@ -38,7 +38,7 @@ app.get(`/img/:folderName/:fileName`, (req, res) => {
 const PORT = process.env.PORT || 9700;
 const userRouter = require('./src/routes/user');
 
-app.use("/user",userRouter);
+app.use("/",userRouter);
 
 
 app.listen(PORT, async () => {

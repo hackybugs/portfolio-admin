@@ -8,7 +8,7 @@ const authenticateToken = (req, res, next) => {
     }
     jwt.verify(token, 'secret', (err, user) => {
         if (err) {
-            return res.status(403).json({ error: 'Token is not valid' });
+            return res.status(403).json({ error: 'Token is not valid'+err });
         }
         req.user = user;
         next();
