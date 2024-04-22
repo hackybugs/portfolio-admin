@@ -10,8 +10,8 @@ module.exports = (sequelize) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      UserPermission.belongsTo(models.User);
-      UserPermission.belongsTo(models.Module);
+      UserPermission.belongsTo(models.User,{ foreignKey: 'user_id' });
+      UserPermission.belongsTo(models.Module, { foreignKey: 'module_id' });
     }
   }
   UserPermission.init({
@@ -33,7 +33,19 @@ module.exports = (sequelize) => {
     },
     module_name: DataTypes.STRING,
     role: DataTypes.STRING,
-    paid: DataTypes.SMALLINT
+    paid: DataTypes.SMALLINT,
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      field: 'createdAt', // Specify the database column name
+      defaultValue: DataTypes.NOW,
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      field: 'updatedAt', // Specify the database column name
+      defaultValue: DataTypes.NOW,
+    },
   }, {
     sequelize,
     modelName: 'UserPermission',

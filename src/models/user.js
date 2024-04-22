@@ -9,7 +9,8 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'userId', // Name of the foreign key in Testimonial model
         as: 'testimonials' // Alias to use when accessing the associated testimonials
       });
-      User.belongsToMany(models.Module, { through: 'UserPermission' });
+      User.belongsToMany(models.Module,{through:models.UserPermission});
+
     }
   }
 
@@ -17,12 +18,12 @@ module.exports = (sequelize, DataTypes) => {
     firstName: {
       type: DataTypes.STRING,
       allowNull: false, // Ensure first name is required
-      field: 'first_name', // Specify the database column name
+      field: 'firstName', // Specify the database column name
     },
     lastName: {
       type: DataTypes.STRING,
       allowNull: false, // Ensure last name is required
-      field: 'last_name', // Specify the database column name
+      field: 'lastName', // Specify the database column name
     },
     email: {
       type: DataTypes.STRING,
@@ -36,17 +37,17 @@ module.exports = (sequelize, DataTypes) => {
     createdAt: {
       type: DataTypes.DATE,
       allowNull: false,
-      field: 'created_at', // Specify the database column name
+      field: 'createdAt', // Specify the database column name
     },
     updatedAt: {
       type: DataTypes.DATE,
       allowNull: false,
-      field: 'updated_at', // Specify the database column name
+      field: 'updatedAt', // Specify the database column name
     },
   }, {
     sequelize,
     modelName: 'User',
-    tableName: 'users', // Use lowercase table name for consistency
+    tableName: 'Users', // Use lowercase table name for consistency
   });
 
   return User;

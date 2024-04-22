@@ -1,6 +1,7 @@
 const express = require('express');
 const db = require('../models');
 const bodyParser = require('body-parser');
+const userpermission = require('../models/userpermission');
 const app = express();
 app.use(bodyParser.json());
 
@@ -25,7 +26,7 @@ const addModule = async (req, res) => {
 const listAdminModule = async (req, res) => {
     try {
         const userId = req.user.id;
-        const user = db.User.findOne({
+        const user = await db.User.findOne({
             where: {
                 id: userId
             }
@@ -33,8 +34,7 @@ const listAdminModule = async (req, res) => {
         if (!user) {
             return res.status(401).json({ error: 'Contact to support' });
         }
-        const modules = await user.getModules();
-
+        const modules = await db.Module.findAll({include:db.User});
         return res.status(200).json({modules});
     } catch (error) {
         return res.status(500).json({ error: "Error is "+error });
