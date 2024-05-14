@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const admin = require("./admin");
-const { register,login,logout,refreshToken} = require("../controllers/usercontroller");
+const { register,login,logout,refreshToken,test} = require("../controllers/usercontroller");
 const {listUserModule} = require("../controllers/moduleController");
 
 
@@ -13,6 +13,8 @@ router.use("/admin",authenticateToken,admin);
 router.post("/refresh",authenticateToken,refreshToken);
 
 router.post("/login", validLogin, login);
+router.get("/test",  test);
+
 router.post("/logout", logout);
 
 router.use("/view-modules",listUserModule);

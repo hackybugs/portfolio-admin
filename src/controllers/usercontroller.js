@@ -1,12 +1,13 @@
 const express = require('express');
 const db = require('../models');
 const bodyParser = require('body-parser');
+
 const bcrypt = require('bcrypt');
 const app = express();
 app.use(bodyParser.json());
 const jwt = require('jsonwebtoken');
 const { generateAccessToken, generateRefreshToken } = require('../helpers/index.helpers');
-
+const { getBreeds } = require('../services/index.services');
 const register = async (req, res) => {
   try {
     const { firstName, lastName, email, password } = req.body;
@@ -101,7 +102,19 @@ const refreshToken = async (req, res) => {
     return res.sendStatus(500); // Internal Server Error
   }
 };
-
+const test = async (req, res) => {
+  try {
+      let breeds = await getBreeds();
+      // Now you have 'breeds' data from the third-party API
+      // Here you can process the data and create records in your database
+      // For demonstration, let's just log the data
+      console.log(breeds);
+      res.status(200).json({ message: 'Data retrieved successfully', data: breeds });
+  } catch (error) {
+      console.error('Error in test function:', error);
+      res.status(500).json({ error: 'An error occurred' });
+  }
+};
 const logout = async (req, res) => {
   try {
     const token = req.headers.authorization.split(' ')[1]; // Extract token from Authorization header
@@ -122,4 +135,4 @@ const logout = async (req, res) => {
   }
 };
 
-module.exports = { register, login, logout, refreshToken };
+module.exports = { register, login, logout, refreshToken, test };

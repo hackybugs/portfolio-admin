@@ -1,5 +1,5 @@
 const express = require('express')
-const app = express();
+const app = express(); 
 const path = require('path');
 require("dotenv").config();
 const cors = require("cors");
@@ -48,6 +48,8 @@ app.listen(PORT, async () => {
   //   console.log('Database connection has been established successfully.');
   // } catch (error) {
   //   console.error('Unable to connect to the database:', error);
+  // mongodb nosql booster 
+  // mongodb://localhost:27017
   // }
 
   console.log(`Server is running on port ${PORT}`);
